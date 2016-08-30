@@ -1,3 +1,10 @@
+<?
+	
+$baby=array(0=>'是',1=>'否')	;
+$vegetarian=array(0=>'是',1=>'否')	;
+	
+	
+	?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -273,18 +280,29 @@
                                     <input type="tel" class="form-control" placeholder="電話 *" id="phone" required data-validation-required-message="請輸入電話.">
                                     <p class="help-block text-danger"></p>
                                 </div>
-								<div class="form-group">
-									<label>參加人數</label>
-									<select name="who" class="form-control">
-										<option name="who[]"  selected="selected">N</option>                             
-										<option name="who[]" >Y</option>
-
-									</select>
-								</div>								
-								<div class="form-group">
-                                    <input type="tel" class="form-control" placeholder="電話 *" id="phone" required data-validation-required-message="請輸入電話.">
-                                    <p class="help-block text-danger"></p>
-                                </div>								
+								<div class="form-group">									
+								<select name="people" id="people" class="form-control">
+									<option value="">請選擇人數</option>
+									<? for ($i=1; $i<=6; $i++) {?>
+									<option value="<?=$i?>"><?= $i; ?></option>
+									<? } ?>
+								</select>								
+								</div>									
+								<div class="form-group">									
+								<select name="baby" id="baby" class="form-control">
+								<option value="" >是否有小孩</option>
+								<?foreach($baby as $key => $value){?>
+								<option value="<?=$key?>"><?= $value; ?></option>					
+								<?}?>
+								</select>								
+								</div>									<div class="form-group">									
+								<select name="vegetarian" id="vegetarian" class="form-control">
+								<option value="" >是否有吃素</option>
+								<?foreach($vegetarian as $key => $value){?>
+								<option value="<?=$key?>"><?= $value; ?></option>					
+								<?}?>
+								</select>								
+								</div>														
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="地址 *" id="address" required data-validation-required-message="請輸入地址.">
                                     <p class="help-block text-danger"></p>
