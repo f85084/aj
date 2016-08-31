@@ -234,7 +234,8 @@ $vegetarian=array(0=>'是',1=>'否')	;
                         <i class="fa fa-info  fa-stack-1x fa-inverse"></i>
                     </span>
                     <h3 class="service-heading">資訊</h3>
-                    <p class="text-muted">日期</p>
+                    <!-- <p class="text-muted">日期</p> -->
+					<h3 style="margin-top: 130px;    margin-bottom: 100px;">2016年8月31日</h3>
                 </div>
 				
                 <div class="col-md-4">
@@ -243,7 +244,8 @@ $vegetarian=array(0=>'是',1=>'否')	;
                         <i class="fa fa-map-marker  fa-stack-1x fa-inverse"></i>
                     </span>
                     <h3 class="service-heading">地址</h3>
-                    <p class="text-muted">台灣</p>
+                    <!-- <p class="text-muted">台灣</p> -->
+					<h3 style="margin-top: 130px;    margin-bottom: 100px;">2016年8月31日</h3>					
                 </div>
 
                 <div class="col-md-4">
@@ -252,8 +254,8 @@ $vegetarian=array(0=>'是',1=>'否')	;
                         <i class="fa fa-map fa-stack-1x fa-inverse"></i>
                     </span>
                     <h3 class="service-heading">地圖</h3>
-                    <p class="text-muted">google</p>
-                </div>
+                    <!-- <p class="text-muted">google</p> -->
+<iframe src="http://www.dr2ooo.com/tools/maps/maps.php?zoom=13&width=300&height=300&ll=25.033442,481.499872&ctrl=true&cp=true&type=normal&" width="310" height="310" frameborder="0" style="border:0"></iframe>
             </div>
         </div>
     </section>
@@ -269,18 +271,21 @@ $vegetarian=array(0=>'是',1=>'否')	;
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <form name="form" id="contactForm" novalidate>
+                    <form name="form" id="contactForm" >
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
+									<label>姓名</label>
                                     <input type="text" class="form-control" placeholder="姓名 *" id="name" required data-validation-required-message="請輸入姓名.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
+									<label>電話</label>									
                                     <input type="tel" class="form-control" placeholder="電話 *" id="phone" required data-validation-required-message="請輸入電話.">
                                     <p class="help-block text-danger"></p>
                                 </div>
-								<div class="form-group">									
+								<div class="form-group">		
+								<label>人數</label>																	
 								<select name="people" id="people" class="form-control">
 									<option value="">請選擇人數</option>
 									<? for ($i=1; $i<=6; $i++) {?>
@@ -288,29 +293,34 @@ $vegetarian=array(0=>'是',1=>'否')	;
 									<? } ?>
 								</select>								
 								</div>									
-								<div class="form-group">									
-								<select name="baby" id="baby" class="form-control">
-								<option value="" >是否有小孩</option>
-								<?foreach($baby as $key => $value){?>
-								<option value="<?=$key?>"><?= $value; ?></option>					
-								<?}?>
-								</select>								
-								</div>									<div class="form-group">									
-								<select name="vegetarian" id="vegetarian" class="form-control">
-								<option value="" >是否有吃素</option>
-								<?foreach($vegetarian as $key => $value){?>
-								<option value="<?=$key?>"><?= $value; ?></option>					
-								<?}?>
-								</select>								
+								<div class="form-group">	
+									<label>是否有小孩</label>									
+									<select name="baby" id="baby" class="form-control">
+									<option value="" >是否有小孩</option>
+									<?foreach($baby as $key => $value){?>
+									<option value="<?=$key?>"><?= $value; ?></option>					
+									<?}?>
+									</select>								
+								</div>									
+								<div class="form-group">	
+									<label>是否有吃素</label>									
+									<select name="vegetarian" id="vegetarian" class="form-control">
+									<option value="" >是否有吃素</option>
+									<?foreach($vegetarian as $key => $value){?>
+									<option value="<?=$key?>"><?= $value; ?></option>					
+									<?}?>
+									</select>								
 								</div>														
                                 <div class="form-group">
+									<label>地址</label>									
                                     <input type="text" class="form-control" placeholder="地址 *" id="address" required data-validation-required-message="請輸入地址.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <textarea class="form-control" placeholder="訊息 *" id="message" required data-validation-required-message="請輸入訊息."></textarea>
+									<label>想說的話</label>									
+                                    <textarea class="form-control" placeholder="想說的話" id="message" required data-validation-required-message="請輸入訊息."></textarea>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
@@ -649,12 +659,12 @@ $vegetarian=array(0=>'是',1=>'否')	;
                 <div class="col-md-4">
                     <span class="copyright">Copyright &copy; Your Website 2016</span>
                 </div>
-                <div class="col-md-4">
+<!--                  <div class="col-md-4">
                     <ul class="list-inline social-buttons">
                         <li><a href="#"><i class="fa fa-facebook"></i></a>
                         </li>
                     </ul>
-                </div>
+                </div>  -->
 <!--                 <div class="col-md-4">
                     <ul class="list-inline quicklinks">
                         <li><a href="#">Privacy Policy</a>
