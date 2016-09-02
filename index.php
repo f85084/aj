@@ -235,7 +235,7 @@ $vegetarian=array(0=>'是',1=>'否')	;
                     </span>
                     <h3 class="service-heading">資訊</h3>
                     <!-- <p class="text-muted">日期</p> -->
-					<h3 style="margin-top: 130px;    margin-bottom: 100px;">2016年8月31日</h3>
+					<h3 style="margin-top: 130px;    margin-bottom: 100px;">W&H飯店</br>2016年8月31日</h3>
                 </div>
 				
                 <div class="col-md-4">
@@ -245,7 +245,7 @@ $vegetarian=array(0=>'是',1=>'否')	;
                     </span>
                     <h3 class="service-heading">地址</h3>
                     <!-- <p class="text-muted">台灣</p> -->
-					<h3 style="margin-top: 130px;    margin-bottom: 100px;">2016年8月31日</h3>					
+					<h3 style="margin-top: 130px;    margin-bottom: 100px;">新北市中和區中正路11巷11號1F11巷11號1F</h3>					
                 </div>
 
                 <div class="col-md-4">
@@ -265,8 +265,8 @@ $vegetarian=array(0=>'是',1=>'否')	;
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">調 查</h2>
-                    <h3 class="section-subheading text-muted">是否參予</h3>
+                    <!-- <h2 class="section-heading"></h2> -->
+                    <!-- <h3 class="section-subheading text-muted">是否參予</h3> -->
                 </div>
             </div>
             <div class="row">
@@ -376,8 +376,8 @@ $vegetarian=array(0=>'是',1=>'否')	;
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Portfolio</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h2 class="section-heading">相片集</h2>
+                    <h3 class="section-subheading text-muted">精選照片</h3>
                 </div>
             </div>
             <div class="row">
