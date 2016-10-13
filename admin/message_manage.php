@@ -11,12 +11,10 @@ include ('mydb.php');
     }
 	
     $sql = "SELECT * FROM  `member` ORDER BY  `member`.`sedtime` ASC ";
-
     // 回傳結果
     $result=mysql_query($sql);
 $baby=array(0=>'是',1=>'否')	;
 $vegetarian=array(0=>'是',1=>'否')	;
-
 	?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +40,11 @@ $vegetarian=array(0=>'是',1=>'否')	;
     <link href="/aj/css/sb-admin-2.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="/aj/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+    <!-- Theme CSS -->
+    <link href="/aj/css/other.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -66,8 +68,9 @@ $vegetarian=array(0=>'是',1=>'否')	;
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../index.php">An</a>
-            </div>
+                <!--<a class="navbar-brand" href="../index.php">An</a>-->
+                <a class="navbar-branda page-scroll" href="../index.php">Jack & Anna</a>	
+				</div>
             <!-- /.navbar-header -->
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
@@ -141,10 +144,12 @@ $vegetarian=array(0=>'是',1=>'否')	;
         <td data-th align="center"><?=$vegetarian[$row['vegetarian']]?></td>
         <td data-th align="center"><?=$row['message']?></td>
         <td data-th align="center"><?=$row['sedtime']?></td>
-        <!--
-		<td data-th align="center"><a href=edit_manage_member.php?id=<?$row['id']?>>編輯<a></td>
-        <td data-th align="center"><a href=manage_member.php?del=<?$row['id']?>>刪除<a></td>
-		-->
+
+		<td data-th align="center"><a href=message_manage_edit.php?id=<?=$row['id']?>>編輯<a></td>
+		<input type="hidden" name="id" value=<?=$row['id']?> >								
+
+        <td data-th align="center"><a href=message_manage_del.php?id=<?=$row['id']?>>刪除<a></td>
+
     </tr>
    <? }?>
 </table>
@@ -176,7 +181,6 @@ $vegetarian=array(0=>'是',1=>'否')	;
                 $('#dataTables-example').DataTable({
                     responsive: true
                 });
-
             });
         </script>
 

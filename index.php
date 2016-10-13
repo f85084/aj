@@ -46,6 +46,13 @@ $result_photo=mysql_query($sql_photo);
 $sql_photo_co = "SELECT * FROM  `photo` where del='0' ORDER BY  `id` DESC";
 $result_photo_co=mysql_query($sql_photo_co);
 	
+	
+    $sql_member = "SELECT * FROM  `member` ORDER BY  `member`.`sedtime` ASC ";
+
+    // 回傳結果
+    $result_member=mysql_query($sql_member);
+
+	
 	?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,6 +78,7 @@ $result_photo_co=mysql_query($sql_photo_co);
 
     <!-- Theme CSS -->
     <link href="css/agency.min.css" rel="stylesheet">
+    <link href="css/other_index.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -78,7 +86,11 @@ $result_photo_co=mysql_query($sql_photo_co);
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+<style type="text/css">
+#message_manage { 
+padding-right: -17px;
+}
+</style>
 </head>
 
 <body id="page-top" class="index">
@@ -301,14 +313,14 @@ $result_photo_co=mysql_query($sql_photo_co);
             </div>
         </div>
     </section>
-	
+
     <!-- Contact Section 問券 -->
      <section id="contact">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">報名</h2>
-                     <h3 class="section-subheading text-muted">人員名單</h3>
+                     <h3 class="section-subheading text-muted"><a href="#message_manage" data-toggle="modal" >人員名單</a></h3>
                 </div>
             </div>
             <div class="row">
@@ -475,6 +487,39 @@ $result_photo_co=mysql_query($sql_photo_co);
         </div>
     </div>
 						 <? }?>
+    <div class="portfolio-modal modal fade" id="message_manage" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">	
+
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here -->
+                                <h2><?=$row_poto_co['title']?></h2>
+                                <p class="item-intro text-muted"></p>
+                                <img class="img-responsive img-centered" src="./photo/<?=$row_poto_co['photo']?>" alt="">
+                                <p><?=$row_poto_co['content']?></p>
+                                <ul class="list-inline">
+                                    <li><?=$row_poto_co['date']?></li>
+                                    <li>A & J</li>
+                                </ul>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>						 
+						 
     <footer>
         <div class="container">
             <div class="row">

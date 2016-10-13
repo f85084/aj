@@ -1,34 +1,43 @@
 <?
 //資料庫檔案
 include ('mydb.php');
-//定義存放上傳檔案的目錄
-$upload_dir='../photo/';
-//如果錯誤代碼為 UPLOAD_ERR_OK, 表示上傳成功
-if($_FILES['photo']['error'] == UPLOAD_ERR_OK ) {
-$fname = iconv('UTF-8', 'big5',
-$_FILES['photo']['name']);
-//將暫存檔搬移到上傳目錄, 並且改回原始檔名
-if(move_uploaded_file($_FILES['photo']['tmp_name'],
-$upload_dir . $fname)){
-//顯示上傳檔案的相關訊息
-}
-}
-else
-echo "上傳失敗";	
-// 新增
+  session_start();
+$id=$_SESSION['id'];
+
+// 新增 
 if(!empty($_POST['act']) && $_POST['act']=='add'){
-$photo=$_FILES['photo']['name'];
-$title=$_POST['title'];		
-$content=$_POST['content'];		
-$del=$_POST['del'];
-$date=$_POST['date'];
-if(empty($error)){ 
-$sql="INSERT photo (photo,title,content,del,date)
-VALUES ('{$photo}','{$title}','{$content}','0',sysdate())";
-$result=mysql_query($sql);
+		$id=$_POST['id'];
+	$name=$_POST['name'];
+	$phone=$_POST['phone'];
+	$who=$_POST['who'];
+	$freetime=$_POST['freetime'];
+	$address=$_POST['address'];
+	$people=$_POST['people'];
+	$baby=$_POST['baby'];
+	$vegetarian=$_POST['vegetarian'];
+	$other=$_POST['other'];
+	$sedtime=$_POST['sedtime'];
+	if(empty($error)){ 
+    $sql="INSERT member (name,phone,address,people,baby,vegetarian,message,sedtime)
+        VALUES ('{$name}','{$phone}','{$address}','{$people}','{$baby}','{$vegetarian}','{$message}',sysdate())";
+		$result=mysql_query($sql);
 	$error='ok';	 
 	 	}	
 		}
+	
+$baby=array(0=>'是',1=>'否')	;
+$vegetarian=array(0=>'是',1=>'否')	;
+
+$sql_photo = "SELECT * FROM  `photo` where del='0' ORDER BY  `id` DESC ";
+$result_photo=mysql_query($sql_photo);
+
+$sql_photo_co = "SELECT * FROM  `photo` where del='0' ORDER BY  `id` DESC";
+$result_photo_co=mysql_query($sql_photo_co);		
+    $sql_member = "SELECT * FROM  `member` ORDER BY  `member`.`sedtime` ASC ";
+
+    // 回傳結果
+    $result_member=mysql_query($sql_member);
+	
 	?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +92,7 @@ $result=mysql_query($sql);
                     <span class="icon-bar"></span>
                 </button>
                 <!--<a class="navbar-brand" href="../index.php">An</a>-->
-                <a class="navbar-branda page-scroll" href="../index.php">Jack & Anna</a>	
+                <a class="navbar-branda page-scroll" href="../index.php">Jack & Anna</a>		
             </div>
             <!-- /.navbar-header -->
             <div class="navbar-default sidebar" role="navigation">
@@ -100,7 +109,6 @@ $result=mysql_query($sql);
                                 </span>
                             </div>
 							</li>-->
-
                         <li>
                             <a href="#"><i class="fa fa-files-o fa-user"></i> 留言管理<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -127,39 +135,72 @@ $result=mysql_query($sql);
         </nav>
         <!--目錄-->
         <!--內容B-->
-        <div id="page-wrapper">
+        <div id="page-wrapper" style="padding-top: 10px;">
         <!-- /#page-wrapper -->
                 <div class="col-md-12 col-md-offset-0">
-                    <h1 class=page-header>新增相片<?$sql?></h1>
+    <!-- Contact Section 問券 -->
+     <section id="contact">
+                    <h3 style="margin-top: 10px;">修改名單資料 <?=$id;?></h3>
                     <form name="form" id="contactForm" action="" enctype="multipart/form-data" method="post"  >
-                        <div class="row">
-                            <div class="col-md-6 col-md-offset-3">
-							<div class="form-group">
-								<label>上傳照片</label>
-								<input type="file" name="photo" id="exampleInputFile"   placeholder="上傳照片"> 
-								<!-- <p class="help-block">會員圖片</p>-->
-							</div>
                                 <div class="form-group">
-									<label>標題</label>									
-                                    <input type="text" class="form-control" placeholder="標題" id="title"  name="title"  required data-validation-required-message="請輸入訊息."></textarea>
+									<label>姓名</label>
+                                    <input type="text" class="form-control" value="<?=$result_member['name']?>" id="name"  name="name" required data-validation-required-message="請輸入姓名.">
                                     <p class="help-block text-danger"></p>
-                                </div>   
-								<div class="form-group">
-									<label>內容</label>									
-                                    <textarea class="form-control" placeholder="內容" id="content"  name="content"  style="height:100px;" required data-validation-required-message="請輸入訊息."></textarea>
+                                </div>
+                                <div class="form-group">
+									<label>電話</label>									
+                                    <input type="tel" class="form-control" value="<?=$result_member['phone']?>" id="phone"   name="phone" required data-validation-required-message="請輸入電話.">
                                     <p class="help-block text-danger"></p>
-                                </div>																									
-                            </div>
+                                </div>
+								<div class="form-group">		
+								<label>人數</label>																	
+								<select name="people" id="people" class="form-control">
+									<option value="<?=$result_member['people']?>">請選擇人數</option>
+									<? for ($i=1; $i<=6; $i++) {?>
+									<option value="<?=$i?>"><?= $i; ?></option>
+									<? } ?>
+								</select>								
+								</div>									
+								<div class="form-group">	
+									<label>是否有小孩</label>									
+									<select name="baby" id="baby" class="form-control">
+									<option value="<?=$result_member['baby']?>" >是否有小孩</option>
+									<?foreach($baby as $key => $value){?>
+									<option value="<?=$key?>"><?= $value; ?></option>					
+									<?}?>
+									</select>								
+								</div>									
+								<div class="form-group">	
+									<label>是否有吃素</label>									
+									<select name="vegetarian" id="vegetarian" class="form-control">
+									<option value="<?=$result_member['vegetarian']?>" >是否有吃素</option>
+									<?foreach($vegetarian as $key => $value){?>
+									<option value="<?=$key?>"><?= $value; ?></option>					
+									<?}?>
+									</select>								
+								</div>														
+                                <div class="form-group">
+									<label>地址</label>									
+                                    <input type="text" class="form-control" value="<?=$result_member['address']?>" name="address" id="address" required data-validation-required-message="請輸入地址.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="form-group">
+									<label>想說的話</label>									
+                                    <textarea class="form-control" value="<?=$result_member['message']?>" id="message"  name="message"  required data-validation-required-message="請輸入訊息."></textarea>
+                                    <p class="help-block text-danger"></p>
+                                </div>
                             <div class="clearfix"></div>
                             <div class="col-lg-12 text-center">
                                 <div id="success"></div>
-                                <button type="submit" class="btn btn-xl">送 出</button>
+                                <button type="submit" class="btn btn-outline btn-primary">送 出</button>
 								<input type="hidden" name="act" value="add" />								
                             </div>
-                        </div>
+							<br>
                     </form>
-                </div>
+        </div>
+    </section>
 </div>     
+</div>
 </div>
             <!--內容S-->
     <!-- /#wrapper -->
@@ -188,17 +229,7 @@ $result=mysql_query($sql);
 
             });
         </script>
-<? if($error=='ok'){?>
-<script>
-alert('新增成功');
-parent.referu('index.php?pid=38');
-</script>
-<? }elseif(!empty($error)){?>
-<script>
-alert('<?=$error?>');
-history.go(-1)
-</script>
-<? }?>
+
 </body>
 
 </html>

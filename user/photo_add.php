@@ -1,22 +1,34 @@
 <?
 //資料庫檔案
-include ('mydb.php');	
-    // 刪除
-    if ($_GET['del']) {
-    $a=$_GET['del'];
-    $d="delete from member where id=$a";
-    mysql_query($d);
-    //異動會顯示異動資料
-    echo '成功幾筆<br>'.mysql_affected_rows();
-    }
-	
-    $sql = "SELECT * FROM  `member` ORDER BY  `member`.`sedtime` ASC ";
-
-    // 回傳結果
-    $result=mysql_query($sql);
-$baby=array(0=>'是',1=>'否')	;
-$vegetarian=array(0=>'是',1=>'否')	;
-
+include ('mydb.php');
+//定義存放上傳檔案的目錄
+$upload_dir='../photo/';
+//如果錯誤代碼為 UPLOAD_ERR_OK, 表示上傳成功
+if($_FILES['photo']['error'] == UPLOAD_ERR_OK ) {
+$fname = iconv('UTF-8', 'big5',
+$_FILES['photo']['name']);
+//將暫存檔搬移到上傳目錄, 並且改回原始檔名
+if(move_uploaded_file($_FILES['photo']['tmp_name'],
+$upload_dir . $fname)){
+//顯示上傳檔案的相關訊息
+}
+}
+else
+echo "上傳失敗";	
+// 新增
+if(!empty($_POST['act']) && $_POST['act']=='add'){
+$photo=$_FILES['photo']['name'];
+$title=$_POST['title'];		
+$content=$_POST['content'];		
+$del=$_POST['del'];
+$date=$_POST['date'];
+if(empty($error)){ 
+$sql="INSERT photo (photo,title,content,del,date)
+VALUES ('{$photo}','{$title}','{$content}','0',sysdate())";
+$result=mysql_query($sql);
+	$error='ok';	 
+	 	}	
+		}
 	?>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,18 +125,23 @@ $vegetarian=array(0=>'是',1=>'否')	;
         <div id="page-wrapper">
         <!-- /#page-wrapper -->
                 <div class="col-md-12 col-md-offset-0">
-                    <h1 class=page-header>新增相片</h1>
+                    <h1 class=page-header>新增相片<?$sql?></h1>
                     <form name="form" id="contactForm" action="" enctype="multipart/form-data" method="post"  >
                         <div class="row">
                             <div class="col-md-6 col-md-offset-3">
 							<div class="form-group">
 								<label>上傳照片</label>
 								<input type="file" name="photo" id="exampleInputFile"   placeholder="上傳照片"> 
-								<p class="help-block">會員圖片</p>
+								<!-- <p class="help-block">會員圖片</p>-->
 							</div>
                                 <div class="form-group">
-									<label>想說的話</label>									
-                                    <textarea class="form-control" placeholder="想說的話" id="text"  name="text"  style="height:100px;" required data-validation-required-message="請輸入訊息."></textarea>
+									<label>標題</label>									
+                                    <input type="text" class="form-control" placeholder="標題" id="title"  name="title"  required data-validation-required-message="請輸入訊息."></textarea>
+                                    <p class="help-block text-danger"></p>
+                                </div>   
+								<div class="form-group">
+									<label>內容</label>									
+                                    <textarea class="form-control" placeholder="內容" id="content"  name="content"  style="height:100px;" required data-validation-required-message="請輸入訊息."></textarea>
                                     <p class="help-block text-danger"></p>
                                 </div>																									
                             </div>
@@ -132,6 +149,7 @@ $vegetarian=array(0=>'是',1=>'否')	;
                             <div class="col-lg-12 text-center">
                                 <div id="success"></div>
                                 <button type="submit" class="btn btn-xl">送 出</button>
+								<input type="hidden" name="act" value="add" />								
                             </div>
                         </div>
                     </form>
@@ -165,7 +183,17 @@ $vegetarian=array(0=>'是',1=>'否')	;
 
             });
         </script>
-
+<? if($error=='ok'){?>
+<script>
+alert('新增成功');
+parent.referu('index.php?pid=38');
+</script>
+<? }elseif(!empty($error)){?>
+<script>
+alert('<?=$error?>');
+history.go(-1)
+</script>
+<? }?>
 </body>
 
 </html>
