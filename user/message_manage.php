@@ -30,10 +30,10 @@ $vegetarian=array(0=>'是',1=>'否')	;
     <meta name=author content="">
     <!--<link rel=icon href=/Content/AssetsBS3/img/favicon.ico>-->
     <title>後台</title>
-    <link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css rel=stylesheet>
-    <link href=/aj/css/management.css rel=stylesheet>
+	<link href="/aj/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/aj/css/management.css" rel=stylesheet>
     <!--[if lt IE 9]><script src=~/Scripts/AssetsBS3/ie8-responsive-file-warning.js></script><![endif]-->
-    <script src=/aj/css/management.js></script>
+    <script src="/aj/css/management.js"></script>
     <!--[if lt IE 9]><script src=https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js></script><script src=https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script><![endif]-->
     <!-- Theme CSS -->
     <link href="/aj/css/other.css" rel="stylesheet">
@@ -44,9 +44,9 @@ $vegetarian=array(0=>'是',1=>'否')	;
     <body>
         <nav class="navbar navbar-inverse navbar-fixed-top" role=navigation>
             <div class=container-fluid>
-                <div class=navbar-header><button type=button class="navbar-toggle collapsed" data-toggle=collapse data-target=#navbar aria-expanded=false aria-controls=navbar> 
+                <div class=navbar-header><!--<button type=button class="navbar-toggle collapsed" data-toggle=collapse data-target=#navbar aria-expanded=false aria-controls=navbar> 
 					<span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> 
-					<span class=icon-bar></span> <span class=icon-bar></span> </button> 
+					<span class=icon-bar></span> <span class=icon-bar></span> </button> -->
                 <a class="navbar-branda page-scroll" href="../index.php">Jack & Anna</a>	
 					</div>
                 <!--<div id=navbar class="navbar-collapse collapse">
@@ -74,29 +74,19 @@ $vegetarian=array(0=>'是',1=>'否')	;
 <div class='table-responsive'>
  <table class='table table-striped'>
     <tr>
-        <td data-th align="center">編號</td>
         <td data-th align="center">姓名</td>
-        <td data-th align="center">電話</td>
-        <td data-th align="center">地址</td>
         <td data-th align="center">人數</td>
         <td data-th align="center">小孩</td>
         <td data-th align="center">素食</td>
-        <td data-th align="center">訊息</td>
-        <td data-th align="center">時間</td>
     </tr>
 <!--    // 表格內容-->
 
     <?while ($row=mysql_fetch_array($result)) {?>
     <tr>
-        <td data-th align="center"><?=$row['id']?></td>
         <td data-th align="center"><?=$row['name']?></td>
-        <td data-th align="center"><?=$row['phone']?></td>
-        <td data-th align="center"><?=$row['address']?></td>
         <td data-th align="center"><?=$row['people']?></td>
         <td data-th align="center"><?=$baby[$row['baby']]?></td>
         <td data-th align="center"><?=$vegetarian[$row['vegetarian']]?></td>
-        <td data-th align="center"><?=$row['message']?></td>
-        <td data-th align="center"><?=$row['sedtime']?></td>
     </tr>
    <? }?>
 </table>

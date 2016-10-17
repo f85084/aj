@@ -1,30 +1,25 @@
 <?
 //資料庫檔案
 include ('mydb.php');
-  session_start();
-$id=$_SESSION['id'];
+$id=$_GET['id'];
 
 // 新增 
 if(!empty($_POST['act']) && $_POST['act']=='add'){
-		$id=$_POST['id'];
 	$name=$_POST['name'];
 	$phone=$_POST['phone'];
-	$who=$_POST['who'];
-	$freetime=$_POST['freetime'];
 	$address=$_POST['address'];
 	$people=$_POST['people'];
 	$baby=$_POST['baby'];
 	$vegetarian=$_POST['vegetarian'];
-	$other=$_POST['other'];
+	$message=$_POST['message'];
 	$sedtime=$_POST['sedtime'];
 	if(empty($error)){ 
-    $sql="INSERT member (name,phone,address,people,baby,vegetarian,message,sedtime)
-        VALUES ('{$name}','{$phone}','{$address}','{$people}','{$baby}','{$vegetarian}','{$message}',sysdate())";
+    $sql="UPDATE member set name='$name',phone='$phone',address='$address',people='$people',baby='$baby',vegetarian='$vegetarian',message='$message' where id='$id'";
 		$result=mysql_query($sql);
 	$error='ok';	 
 	 	}	
 		}
-	
+
 $baby=array(0=>'是',1=>'否')	;
 $vegetarian=array(0=>'是',1=>'否')	;
 
@@ -33,10 +28,12 @@ $result_photo=mysql_query($sql_photo);
 
 $sql_photo_co = "SELECT * FROM  `photo` where del='0' ORDER BY  `id` DESC";
 $result_photo_co=mysql_query($sql_photo_co);		
-    $sql_member = "SELECT * FROM  `member` ORDER BY  `member`.`sedtime` ASC ";
 
-    // 回傳結果
-    $result_member=mysql_query($sql_member);
+$sql_member = "SELECT * FROM  member where id='$id'";
+// 回傳結果
+$result_member=mysql_query($sql_member);
+$row_member=mysql_fetch_array($result_member);
+	
 	
 	?>
 <!DOCTYPE html>
@@ -140,22 +137,22 @@ $result_photo_co=mysql_query($sql_photo_co);
                 <div class="col-md-12 col-md-offset-0">
     <!-- Contact Section 問券 -->
      <section id="contact">
-                    <h3 style="margin-top: 10px;">修改名單資料 <?=$id;?></h3>
+                    <h3 style="margin-top: 10px;">修改名單資料</h3>
                     <form name="form" id="contactForm" action="" enctype="multipart/form-data" method="post"  >
                                 <div class="form-group">
 									<label>姓名</label>
-                                    <input type="text" class="form-control" value="<?=$result_member['name']?>" id="name"  name="name" required data-validation-required-message="請輸入姓名.">
+                                    <input type="text" class="form-control" value="<?=$row_member['name']?>" id="name"  name="name" required data-validation-required-message="請輸入姓名.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
 									<label>電話</label>									
-                                    <input type="tel" class="form-control" value="<?=$result_member['phone']?>" id="phone"   name="phone" required data-validation-required-message="請輸入電話.">
+                                    <input type="tel" class="form-control" value="<?=$row_member['phone']?>" id="phone"   name="phone" required data-validation-required-message="請輸入電話.">
                                     <p class="help-block text-danger"></p>
                                 </div>
 								<div class="form-group">		
 								<label>人數</label>																	
 								<select name="people" id="people" class="form-control">
-									<option value="<?=$result_member['people']?>">請選擇人數</option>
+									<option ><?=$row_member['people']?></option>
 									<? for ($i=1; $i<=6; $i++) {?>
 									<option value="<?=$i?>"><?= $i; ?></option>
 									<? } ?>
@@ -164,7 +161,7 @@ $result_photo_co=mysql_query($sql_photo_co);
 								<div class="form-group">	
 									<label>是否有小孩</label>									
 									<select name="baby" id="baby" class="form-control">
-									<option value="<?=$result_member['baby']?>" >是否有小孩</option>
+									<option ><?=$baby[$row_member['baby']]?></option>
 									<?foreach($baby as $key => $value){?>
 									<option value="<?=$key?>"><?= $value; ?></option>					
 									<?}?>
@@ -173,7 +170,7 @@ $result_photo_co=mysql_query($sql_photo_co);
 								<div class="form-group">	
 									<label>是否有吃素</label>									
 									<select name="vegetarian" id="vegetarian" class="form-control">
-									<option value="<?=$result_member['vegetarian']?>" >是否有吃素</option>
+									<option ><?=$vegetarian[$row_member['vegetarian']]?></option>
 									<?foreach($vegetarian as $key => $value){?>
 									<option value="<?=$key?>"><?= $value; ?></option>					
 									<?}?>
@@ -181,12 +178,12 @@ $result_photo_co=mysql_query($sql_photo_co);
 								</div>														
                                 <div class="form-group">
 									<label>地址</label>									
-                                    <input type="text" class="form-control" value="<?=$result_member['address']?>" name="address" id="address" required data-validation-required-message="請輸入地址.">
+                                    <input type="text" class="form-control" value="<?=$row_member['address']?>" name="address" id="address" required data-validation-required-message="請輸入地址.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
 									<label>想說的話</label>									
-                                    <textarea class="form-control" value="<?=$result_member['message']?>" id="message"  name="message"  required data-validation-required-message="請輸入訊息."></textarea>
+                                    <textarea class="form-control"  id="message"  name="message"  required data-validation-required-message="請輸入訊息."><?=$row_member['message']?></textarea>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             <div class="clearfix"></div>
@@ -204,6 +201,17 @@ $result_photo_co=mysql_query($sql_photo_co);
 </div>
             <!--內容S-->
     <!-- /#wrapper -->
+<? if($error=='ok'){?>
+<script>
+alert('新增成功');
+window.location.href = 'message_manage.php';
+</script>
+<? }elseif(!empty($error)){?>
+<script>
+alert('<?=$error?>');
+history.go(-1)
+</script>
+<? }?>	
         <!-- jQuery -->
         <script src="/aj/js/jquery.min.js"></script>
 

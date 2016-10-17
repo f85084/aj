@@ -1,4 +1,17 @@
-#message_manage { 
-clear:padding-right;	
-padding-right: -17px;
+.modal-header_index{
+    padding: 20px;
+}
+.send_table{
+width: 300px;
+}
+.margin_auto{
+display:block; 
+margin:auto;
+}
+.table-header{
+background-color:#A3D1D1;
+    width: 100%;
+    max-width: 100%;
+padding: 8px;
+
 }

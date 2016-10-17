@@ -14,7 +14,7 @@ if(!empty($_POST['act']) && $_POST['act']=='add'){
 	$people=$_POST['people'];
 	$baby=$_POST['baby'];
 	$vegetarian=$_POST['vegetarian'];
-	$other=$_POST['other'];
+	$message=$_POST['message'];
 	$sedtime=$_POST['sedtime'];
 	if(empty($error)){ 
     $sql="INSERT member (name,phone,address,people,baby,vegetarian,message,sedtime)
@@ -80,6 +80,7 @@ $result_photo_co=mysql_query($sql_photo_co);
     <link href="css/agency.min.css" rel="stylesheet">
     <link href="css/other_index.css" rel="stylesheet">
 
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -87,10 +88,16 @@ $result_photo_co=mysql_query($sql_photo_co);
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 <style type="text/css">
-#message_manage { 
-padding-right: -17px;
-}
+
 </style>
+		<script>
+			$(document).ready(function(){/*$(DOM).當準備就緒並且載入時(要做這件事)*/
+		$("#portfolioModal100").removeClass("style");
+
+				});
+			});
+		</script>
+
 </head>
 
 <body id="page-top" class="index">
@@ -320,7 +327,7 @@ padding-right: -17px;
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">報名</h2>
-                     <h3 class="section-subheading text-muted"><a href="#message_manage" data-toggle="modal" >人員名單</a></h3>
+                     <h3 class="section-subheading text-muted"><a href="#send" data-toggle="modal" >人員名單</a></h3>
                 </div>
             </div>
             <div class="row">
@@ -340,7 +347,7 @@ padding-right: -17px;
                                 </div>
 								<div class="form-group">		
 								<label>人數</label>																	
-								<select name="people" id="people" class="form-control">
+								<select name="people" id="people" class="form-control" required>
 									<option value="">請選擇人數</option>
 									<? for ($i=1; $i<=6; $i++) {?>
 									<option value="<?=$i?>"><?= $i; ?></option>
@@ -349,7 +356,7 @@ padding-right: -17px;
 								</div>									
 								<div class="form-group">	
 									<label>是否有小孩</label>									
-									<select name="baby" id="baby" class="form-control">
+									<select name="baby" id="baby" class="form-control required">
 									<option value="" >是否有小孩</option>
 									<?foreach($baby as $key => $value){?>
 									<option value="<?=$key?>"><?= $value; ?></option>					
@@ -358,7 +365,7 @@ padding-right: -17px;
 								</div>									
 								<div class="form-group">	
 									<label>是否有吃素</label>									
-									<select name="vegetarian" id="vegetarian" class="form-control">
+									<select name="vegetarian" id="vegetarian" class="form-control" required>
 									<option value="" >是否有吃素</option>
 									<?foreach($vegetarian as $key => $value){?>
 									<option value="<?=$key?>"><?= $value; ?></option>					
@@ -391,6 +398,7 @@ padding-right: -17px;
             </div>
         </div>
     </section>
+	
     <!-- Clients Aside 廣告 -->
 <!--     <aside class="clients">
         <div class="container">
@@ -487,7 +495,8 @@ padding-right: -17px;
         </div>
     </div>
 						 <? }?>
-    <div class="portfolio-modal modal fade" id="message_manage" tabindex="-1" role="dialog" aria-hidden="true">
+<!--滿版名單-->						 
+<!--<div class="portfolio-modal modal fade" id="send" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="close-modal" data-dismiss="modal">
@@ -499,17 +508,32 @@ padding-right: -17px;
                 <div class="container">
                     <div class="row">	
 
-                        <div class="col-lg-8 col-lg-offset-2">
+                        <div class="col-lg-4 col-lg-offset-4">                                                                                                                
                             <div class="modal-body">
-                                <!-- Project Details Go Here -->
-                                <h2><?=$row_poto_co['title']?></h2>
-                                <p class="item-intro text-muted"></p>
-                                <img class="img-responsive img-centered" src="./photo/<?=$row_poto_co['photo']?>" alt="">
-                                <p><?=$row_poto_co['content']?></p>
-                                <ul class="list-inline">
-                                    <li><?=$row_poto_co['date']?></li>
-                                    <li>A & J</li>
-                                </ul>
+
+<div class='table-responsive'>
+ <table class='table table-striped'>
+    <tr>
+        <td data-th align="center">姓名</td>
+        <td data-th align="center">人數</td>
+        <td data-th align="center">小孩</td>
+        <td data-th align="center">素食</td>
+    </tr>
+
+
+    <?//while ($sql_member=mysql_fetch_array($result_member)) {?>
+    <tr>
+        <td data-th align="center"><?//=$sql_member['name']?></td>
+        <td data-th align="center"><?//=$sql_member['people']?></td>
+        <td data-th align="center"><?//=$baby[$sql_member['baby']]?></td>
+        <td data-th align="center"><?//=$vegetarian[$sql_member['vegetarian']]?></td>
+    </tr>
+   <? //}?>
+</table>
+<br>
+<br>
+<br>
+<br>
                                 <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
                             </div>
                         </div>
@@ -518,7 +542,46 @@ padding-right: -17px;
                 </div>
             </div>
         </div>
-    </div>						 
+    </div>
+				-->		 
+<!--名單 -->
+<div class="modal fade " id="send" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header_index">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+
+      </div>
+      <div class="modal-body">
+<div class='table-responsive send_table margin_auto'>
+ <table class='table table-striped'>
+    <tr class='table-header'>
+        <td data-th align="center">姓名</td>
+        <td data-th align="center">人數</td>
+        <td data-th align="center">小孩</td>
+        <td data-th align="center">素食</td>
+    </tr>
+
+
+    <?while ($sql_member=mysql_fetch_array($result_member)) {?>
+    <tr>
+        <td data-th align="center"><?=$sql_member['name']?></td>
+        <td data-th align="center"><?=$sql_member['people']?></td>
+        <td data-th align="center"><?=$baby[$sql_member['baby']]?></td>
+        <td data-th align="center"><?=$vegetarian[$sql_member['vegetarian']]?></td>
+    </tr>
+   <? }?>
+</table>
+</div>
+<br><br><br>
+
+
+       <button type="button" class="btn btn-primary margin_auto" data-dismiss="modal" ><i class="fa fa-times"></i> Close Project</button>
+<br><br>
+    </div>
+  </div>
+</div>						 
+</div>						 
 						 
     <footer>
         <div class="container">
@@ -551,7 +614,7 @@ padding-right: -17px;
 <? if($error=='ok'){?>
 <script>
 alert('新增成功');
-parent.referu('index.php?pid=38');
+header("location:index.php#contact");
 </script>
 <? }elseif(!empty($error)){?>
 <script>
