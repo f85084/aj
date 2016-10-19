@@ -9,3 +9,77 @@
     font-size: 18px;
     line-height: 20px;
 }
+.page-header-us {
+    padding-bottom: 9px;
+    margin: 0px 0px 25px;
+    border-bottom: 1px solid #eee;
+}
+.menutable td {
+    font-size: 14px;
+    padding: 6px;
+    border-right: solid 1px #CCC;
+    border-bottom: solid 1px #CCC;
+}
+.menutable {
+    border-left: solid 1px #CCC;
+    border-top: solid 1px #CCC;
+    width: 98%;
+    margin: 10px auto;
+    font-size: 16px;
+    background-color: #FFF;
+}
+//ªí®æ
+.rwd-table {
+¡@background: #fff;
+¡@overflow: hidden;
+}
+.rwd-table tr:nth-of-type(2n){
+¡@background: #eee;
+}
+.rwd-table th, 
+.rwd-table td {
+¡@margin: 0.5em 1em;
+}
+.rwd-table {
+¡@min-width: 100%;
+}
+.rwd-table th {
+¡@display: none;
+}
+.rwd-table td {
+¡@display: block;
+}
+.rwd-table td:before {
+¡@content: attr(data-th) " : ";
+¡@font-weight: bold;
+¡@width: 6.5em;
+¡@display: inline-block;
+}
+.rwd-table th, .rwd-table td {
+¡@text-align: left;
+}
+.rwd-table th, .rwd-table td:before {
+¡@color: #D20B2A;
+¡@font-weight: bold;
+}
+@media (min-width: 480px) {
+.rwd-table td:before {
+¡@display: none;
+}
+.rwd-table th, .rwd-table td {
+¡@display: table-cell;
+¡@padding: 0.25em 0.5em;
+}
+.rwd-table th:first-child, 
+.rwd-table td:first-child {
+¡@padding-left: 0;
+}
+.rwd-table th:last-child, 
+.rwd-table td:last-child {
+¡@padding-right: 0;
+}
+.rwd-table th, 
+.rwd-table td {
+¡@padding: 1em !important;
+}
+}

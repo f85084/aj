@@ -137,7 +137,6 @@ $result=mysql_query($sql);
 							<div class="form-group">
 								<label>上傳照片</label>
 								<input type="file" name="photo" id="exampleInputFile"   placeholder="上傳照片"> 
-								<!-- <p class="help-block">會員圖片</p>-->
 							</div>
                                 <div class="form-group">
 									<label>標題</label>									
@@ -191,7 +190,7 @@ $result=mysql_query($sql);
 <? if($error=='ok'){?>
 <script>
 alert('新增成功');
-parent.referu('index.php?pid=38');
+window.location.href = 'photo_manage.php';
 </script>
 <? }elseif(!empty($error)){?>
 <script>

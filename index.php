@@ -47,7 +47,7 @@ $sql_photo_co = "SELECT * FROM  `photo` where del='0' ORDER BY  `id` DESC";
 $result_photo_co=mysql_query($sql_photo_co);
 	
 	
-    $sql_member = "SELECT * FROM  `member` ORDER BY  `member`.`sedtime` ASC ";
+    $sql_member = "SELECT * FROM  `member` where del='1' ORDER BY  `member`.`sedtime` ASC ";
 
     // 回傳結果
     $result_member=mysql_query($sql_member);
@@ -553,26 +553,24 @@ $result_photo_co=mysql_query($sql_photo_co);
 
       </div>
       <div class="modal-body">
-<div class='table-responsive send_table margin_auto'>
- <table class='table table-striped'>
-    <tr class='table-header'>
-        <td data-th align="center">姓名</td>
-        <td data-th align="center">人數</td>
-        <td data-th align="center">小孩</td>
-        <td data-th align="center">素食</td>
-    </tr>
-
-
-    <?while ($sql_member=mysql_fetch_array($result_member)) {?>
-    <tr>
-        <td data-th align="center"><?=$sql_member['name']?></td>
-        <td data-th align="center"><?=$sql_member['people']?></td>
-        <td data-th align="center"><?=$baby[$sql_member['baby']]?></td>
-        <td data-th align="center"><?=$vegetarian[$sql_member['vegetarian']]?></td>
-    </tr>
-   <? }?>
-</table>
-</div>
+	<div class='table-responsive send_table margin_auto'>
+		<table class='table table-striped'>
+			<tr class='table-header'>
+				<td data-th align="center">姓名</td>
+				<td data-th align="center">人數</td>
+				<td data-th align="center">小孩</td>
+				<td data-th align="center">素食</td>
+			</tr>
+			<?while ($sql_member=mysql_fetch_array($result_member)) {?>
+			<tr>
+				<td data-th align="center"><?=$sql_member['name']?></td>
+				<td data-th align="center"><?=$sql_member['people']?></td>
+				<td data-th align="center"><?=$baby[$sql_member['baby']]?></td>
+				<td data-th align="center"><?=$vegetarian[$sql_member['vegetarian']]?></td>
+			</tr>
+		   <? }?>
+		</table>
+	</div>
 <br><br><br>
 
 

@@ -1,55 +1,29 @@
 <?
 //資料庫檔案
-include ('mydb.php');	
-include ('include/global.func2.php');	
-$wherea=array();
-$where='';
-$logws='';
-$logw=array();
-$lurl='';
-$_GET=ck_gp($_GET);
-    // 刪除
-   /*if ($_GET['del']) {
-    $a=$_GET['del'];
-    $d="delete from member where id=$a";
-    mysql_query($d);
-    異動會顯示異動資料
-    echo '成功幾筆<br>'.mysql_affected_rows();
-    }*/
-if (ck_num($_GET['del'])){
-	$wherea[]="del='".m_esc($_GET['del'])."'";
-	$lurl.="&del=".$_GET['del'];
-	$logw[]="del = ".m_esc($_GET['del']);
-}
-if (ck_num($_GET['vegetarian'])){
-	$wherea[]="vegetarian='".m_esc($_GET['vegetarian'])."'";
-	$lurl.="&vegetarian=".$_GET['vegetarian'];
-	$logw[]="vegetarian = ".m_esc($_GET['vegetarian']);
-}	
-if(!empty($wherea)){
-	$where=" WHERE ".implode(' and ',$wherea);
-	$logws=implode(' and ',$logw);
-}
-$number=10;
-/*總共幾筆*/
-$query_num= "SELECT COUNT(*) FROM member ".$where;	
-$num=mysql_query($query_num);
-$q_num =mysql_fetch_row($num);
-$product_page_num= $q_num[0];
-$page=ceil($product_page_num/$number);
- /*頁設設定*/
-if(isset($_GET['p'])){
-	$p=$_GET['p'];
-	$start=($p-1)*$number;//開始
-}
-else{
-	$start=0;
-}
-$querymr = "SELECT * FROM  member $where order by  sedtime  ASC LIMIT $start, $number";
-$mr=mysql_query($querymr);
+include ('mydb.php');
+$id=$_GET['id'];
+
+// 新增 
+if(!empty($_POST['act']) && $_POST['act']=='add'){
+    $sql="UPDATE member set del='0' where id='$id'";
+		$result=mysql_query($sql);
+	$error='ok';	 
+	 	}	
 $baby=array(0=>'是',1=>'否')	;
 $vegetarian=array(0=>'是',1=>'否')	;
-$del=array(0=>'是',1=>'否')	;
+
+$sql_photo = "SELECT * FROM  `photo` where del='0' ORDER BY  `id` DESC ";
+$result_photo=mysql_query($sql_photo);
+
+$sql_photo_co = "SELECT * FROM  `photo` where del='0' ORDER BY  `id` DESC";
+$result_photo_co=mysql_query($sql_photo_co);		
+
+$sql_member = "SELECT * FROM  member where id='$id'";
+// 回傳結果
+$result_member=mysql_query($sql_member);
+$row_member=mysql_fetch_array($result_member);
+	
+	
 	?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,13 +78,13 @@ $del=array(0=>'是',1=>'否')	;
                     <span class="icon-bar"></span>
                 </button>
                 <!--<a class="navbar-brand" href="../index.php">An</a>-->
-                <a class="navbar-branda page-scroll" href="../index.php">Jack & Anna</a>	
-				</div>
+                <a class="navbar-branda page-scroll" href="../index.php">Jack & Anna</a>		
+            </div>
             <!-- /.navbar-header -->
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-					                            <!-- /input-group -->
+					    <!-- /input-group -->
                         <!--<li class="sidebar-search">
                             <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" placeholder="Search...">
@@ -140,6 +114,7 @@ $del=array(0=>'是',1=>'否')	;
                                     <a href="photo_manage.php">照片列表</a>
                                 </li>
                             </ul>
+                    </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>
@@ -147,92 +122,64 @@ $del=array(0=>'是',1=>'否')	;
         </nav>
         <!--目錄-->
         <!--內容B-->
-        <div id="page-wrapper">
+        <div id="page-wrapper" style="padding-top: 10px;">
         <!-- /#page-wrapper -->
-			<h2 class=page-header-us>留言列表</h2>
-		<form  method="get" action="message_manage.php">			
-				<div class="panel panel-default">
-				  <!-- /.panel-heading -->
-					<div class="panel-heading">
-					搜尋欄
+        <div class="col-md-12 col-md-offset-0">
+    <!-- Contact Section 問券 -->
+     <section id="contact">
+            <h3 style="margin-top: 10px;">刪除名單</h3>			
+                <form name="form" id="contactForm" action="" enctype="multipart/form-data" method="post"  >
+				<table class="menutable">	
+					<tr>
+						<td>姓名</td>
+						<td><?=$row_member['name']?></td>
+					</tr>
+					<tr>
+						<td>電話</td>									
+						<td><?=$row_member['phone']?></td>
+					</tr>
+					<tr>		
+					<td>人數</td>																	
+					<td><?=$row_member['people']?></td>				
+					<tr>	
+						<td>是否有小孩</td>									
+						<td><?=$baby[$row_member['baby']]?></td>					
+					<tr>	
+						<td>是否有吃素</td>									
+						<td><?=$vegetarian[$row_member['vegetarian']]?></td>		
+					<tr>
+						<td>地址</td>									
+						<td><?=$row_member['address']?></td>
 					</div>
-					<!-- /.panel-body -->
-					<div class="panel-body">
-						<table class="menutable">
-							<tr>
-								<td>刪除</td>
-								<td>
-									<input type="radio" name="del" id="del" value="" <?=empty($_GET['del'])? ' checked="checked"': '';?> />不拘
-									<? $x=1;foreach($del as $k => $v){?><input type="radio" name="del" id="del"  value="<?=$k?>" <?=($k==$_GET['del'] && ck_num($_GET['del']))? ' checked="checked"': '';?> />
-										<?=$v;?>
-											<?=($x%11==0)?'<br>':'';?>
-												<? ++$x;}?>
-								</td>	
-								<td>素食</td>
-								<td>
-									<input type="radio" name="vegetarian" id="vegetarian" value="" <?=empty($_GET['vegetarian'])? ' checked="checked"': '';?> />不拘
-									<? $x=1;foreach($vegetarian as $k => $v){?><input type="radio" name="vegetarian" id="vegetarian"  value="<?=$k?>" <?=($k==$_GET['vegetarian'] && ck_num($_GET['vegetarian']))? ' checked="checked"': '';?> />
-										<?=$v;?>
-											<?=($x%11==0)?'<br>':'';?>
-												<? ++$x;}?>
-								</td>								
-							</tr>
-						</table>
-					<table style="margin: 15px;">			
+					<tr>
+						<td>想說的話</td>									
+						<td><?=$row_member['message']?></td>
+					</tr>
 						<tr>
-							<td width="100" ><input type="submit" class="btn btn-primary" value="查詢資料"></td>
+						<td colspan="10" align="center">
+						<button type="submit" class="btn btn-outline btn-primary">送 出</button>
+						<input type="hidden" name="act" value="add" />
+						</td>
 						</tr>
-					</table>						
-					</div>
-				</div>
-		</form>
-					<?if($product_page_num > 0){?>	
-	總共有<?=$product_page_num?>人
-		<div align="center">
-			<ul class="pagination">
-			<?for($i=1;$i<=$page;$i++){?>
-				<li><a href=message_manage.php?p=<?=$i?>><?=$i?></a></li>
-			<?} }?>
-			</ul>
-		</div>
-					<!--    // 表格表題-->
-				<div class='table-responsive'>
-				<table class='table table-striped'>
-					<tr>
-						<td data-th align="center">編號</td>
-						<td data-th align="center">姓名</td>
-						<td data-th align="center">電話</td>
-						<td data-th align="center">地址</td>
-						<td data-th align="center">人數</td>
-						<td data-th align="center">小孩</td>
-						<td data-th align="center">素食</td>
-						<td data-th align="center">訊息</td>
-						<td data-th align="center">時間</td>
-						<td data-th align="center">編輯</td>
-						<td data-th align="center">刪除</td>
-					</tr>
-				<!--    // 表格內容-->
-					<?while ($row=mysql_fetch_array($mr)) {?>
-					<tr>
-						<td data-th align="center"><?=$row['id']?></td>
-						<td data-th align="center"><?=$row['name']?></td>
-						<td data-th align="center"><?=$row['phone']?></td>
-						<td data-th align="center"><?=$row['address']?></td>
-						<td data-th align="center"><?=$row['people']?></td>
-						<td data-th align="center"><?=$baby[$row['baby']]?></td>
-						<td data-th align="center"><?=$vegetarian[$row['vegetarian']]?></td>
-						<td data-th align="center"><?=$row['message']?></td>
-						<td data-th align="center"><?=$row['sedtime']?></td>
-						<td data-th align="center"><a href=message_manage_edit.php?id=<?=$row['id']?>>編輯<a></td>
-						<input type="hidden" name="id" value=<?=$row['id']?> >								
-						<td data-th align="center"><a href=message_manage_del.php?id=<?=$row['id']?>>刪除<a></td>
-					</tr>
-				   <? }?>
-				</table>
-
-				</div>
-		</div>     
-	</div>
+					<br>
+					</table>
+				</form>
+        </div>
+    </section>
+</div>     
+</div>
+</div>
+<? if($error=='ok'){?>
+<script>
+alert('刪除成功');
+window.location.href = 'message_manage.php';
+</script>
+<? }elseif(!empty($error)){?>
+<script>
+alert('<?=$error?>');
+history.go(-1)
+</script>
+<? }?>	
             <!--內容S-->
     <!-- /#wrapper -->
         <!-- jQuery -->
@@ -251,14 +198,6 @@ $del=array(0=>'是',1=>'否')	;
         <!-- Custom Theme JavaScript -->
         <script src="/aj/js/sb-admin-2.js"></script>
 
-        <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-        <script>
-            $(document).ready(function () {
-                $('#dataTables-example').DataTable({
-                    responsive: true
-                });
-            });
-        </script>
 
 </body>
 
