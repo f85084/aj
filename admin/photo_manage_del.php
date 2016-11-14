@@ -1,41 +1,17 @@
 <?
 //資料庫檔案
-include ('mydb.php');	
-include ('include/global.func2.php');	
-$wherea=array();
-$where='';
-$logws='';
-$logw=array();
-$lurl='';
-$_GET=ck_gp($_GET);
-if (ck_num($_GET['del'])){
-	$wherea[]="del='".m_esc($_GET['del'])."'";
-	$lurl.="&del=".$_GET['del'];
-	$logw[]="del = ".m_esc($_GET['del']);
-}
-if(!empty($wherea)){
-	$where=" WHERE ".implode(' and ',$wherea);
-	$logws=implode(' and ',$logw);
-}
-$number=10;
-/*總共幾筆*/
-$query_num= "SELECT COUNT(*) FROM photo ".$where;	
-$num=mysql_query($query_num);
-$q_num =mysql_fetch_row($num);
-$product_page_num= $q_num[0];
-$page=ceil($product_page_num/$number);
- /*頁設設定*/
-if(isset($_GET['p'])){
-	$p=$_GET['p'];
-	$start=($p-1)*$number;//開始
-}
-else{
-	$start=0;
-}
-$querymr = "SELECT * FROM  photo $where order by  date  ASC LIMIT $start, $number";
-$mr=mysql_query($querymr);
-
-$del=array(0=>'是',1=>'否')	;
+include ('mydb.php');
+$id=$_GET['id'];
+// 更新
+if(!empty($_POST['act']) && $_POST['act']=='add'){ 
+$sql="UPDATE photo set del='1' where id='$id'";
+$result=mysql_query($sql);
+	$error='ok';	 
+	 	}	
+		
+$sql_photo = "SELECT * FROM  `photo` where id='$id' ";
+$result_photo=mysql_query($sql_photo);	
+$row_photo=mysql_fetch_array($result_photo);
 
 	?>
 <!DOCTYPE html>
@@ -80,7 +56,6 @@ $del=array(0=>'是',1=>'否')	;
 <body>
     <!--目錄-->
     <div id="wrapper">
-
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -92,22 +67,11 @@ $del=array(0=>'是',1=>'否')	;
                 </button>
                 <!--<a class="navbar-brand" href="../index.php">An</a>-->
                 <a class="navbar-branda page-scroll" href="../index.php">Jack & Anna</a>	
-				</div>
+            </div>
             <!-- /.navbar-header -->
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-					                            <!-- /input-group -->
-                        <!--<li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-							</li>-->
                         <li>
                             <a href="#"><i class="fa fa-files-o fa-user"></i> 留言管理<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -127,6 +91,8 @@ $del=array(0=>'是',1=>'否')	;
                                     <a href="photo_manage.php">照片列表</a>
                                 </li>
                             </ul>
+						</li>
+					</ul>
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>
@@ -134,75 +100,35 @@ $del=array(0=>'是',1=>'否')	;
         </nav>
         <!--目錄-->
         <!--內容B-->
-		<div id="page-wrapper">
-			<!-- /#page-wrapper -->
-		<h2 class=page-header-us>照片列表</h2>
-		<form  method="get" action="">			
-				<div class="panel panel-default">
-				  <!-- /.panel-heading -->
-					<div class="panel-heading">
-					搜尋欄
-					</div>
-					<!-- /.panel-body -->
-					<div class="panel-body">
-						<table class="menutable">
-							<tr>
-								<td>刪除</td>
-								<td>
-									<input type="radio" name="del" id="del" value="" <?=empty($_GET['del'])? ' checked="checked"': '';?> />不拘
-									<? $x=1;foreach($del as $k => $v){?><input type="radio" name="del" id="del"  value="<?=$k?>" <?=($k==$_GET['del'] && ck_num($_GET['del']))? ' checked="checked"': '';?> />
-										<?=$v;?>
-											<?=($x%11==0)?'<br>':'';?>
-												<? ++$x;}?>
-								</td>	
-							</tr>
-						</table>
-					<table style="margin: 15px;">			
-						<tr>
-							<td width="100" ><input type="submit" class="btn btn-primary" value="查詢資料"></td>
-						</tr>
-					</table>						
-					</div>
-				</div>
-		</form>
-					<?if($product_page_num > 0){?>	
-	總共有<?=$product_page_num?>筆
-		<div align="center">
-			<ul class="pagination">
-			<?for($i=1;$i<=$page;$i++){?>
-				<li><a href=photo_manage.php?p=<?=$i?>><?=$i?></a></li>
-			<?} }?>
-			</ul>
-		</div>
-		<!--// 表格表題-->
-			<div class='table-responsive'>
-				 <table class='table table-striped'>
-					<tr>
-						<td data-th align="center">編號</td>
-						<td data-th align="center">照片</td>
-						<td data-th align="center">標題</td>
-						<td data-th align="center">內文</td>
-						<td data-th align="center">顯示</td>
-						<td data-th align="center">日期</td>
-						<td data-th align="center">編輯</td>
-						<td data-th align="center">刪除</td>
-					</tr>
-				<!--    // 表格內容-->
-					<?while ($row=mysql_fetch_array($mr)) {?>
-					<tr>
-						<td data-th align="center"><?=$row['id']?></td>
-						<td data-th align="center"><img src=../photo/<?=$row['photo']?> width=50 height=50></td>
-						<td data-th align="center"><?=$row['title']?></td>
-						<td data-th align="center"><?=$row['content']?></td>
-						<td data-th align="center"><?=$del[$row['del']]?></td>
-						<td data-th align="center"><?=$row['date']?></td>
-						<td data-th align="center"><a href=photo_manage_edit.php?id=<?=$row['id'];?>>編輯<a></td>
-						<td data-th align="center"><a href=photo_manage_del.php?id=<?=$row['id'];?>>刪除<a></td>
-					</tr>
-				   <? }?>
-				</table>
+        <div id="page-wrapper">
+        <!-- /#page-wrapper -->
+                <div class="col-md-12 col-md-offset-0">
+                    <h1 class=page-header>刪除相片</h1>
+                    <form name="form" id="contactForm" action="" enctype="multipart/form-data" method="post"  >
+                            <div class="col-md-6 col-md-offset-3">
+								<table class="menutable">
+									<tr>			
+										<td>照片</td>
+										<td><img src=../photo/<?=$row_photo['photo']?> width=250 height=250></td>
+								<!--	<input type="file" name="photo" id="exampleInputFile"   placeholder="上傳照片"> -->
+									<tr>
+									<tr>
+										<td>標題</td>									
+										<td>標題<?=$row_photo['title']?></td>
+									</tr>		
+										<td>內容</td>									
+										<td><?=$row_photo['content']?></td>
+									<tr>
+										<td colspan="10" align="center">
+										<button type="submit" class="btn btn-outline btn-primary">送 出</button>
+										<input type="hidden" name="act" value="add" />
+										</td>
+									</tr>
+								</table>
+							</div>
+                    </form>
 			</div>
-		</div>     
+		</div>		
 	</div>
             <!--內容S-->
     <!-- /#wrapper -->
@@ -231,7 +157,17 @@ $del=array(0=>'是',1=>'否')	;
 
             });
         </script>
-
+<? if($error=='ok'){?>
+<script>
+alert('刪除成功');
+window.location.href ='photo_manage.php';
+</script>
+<? }elseif(!empty($error)){?>
+<script>
+alert('<?=$error?>');
+history.go(-1)
+</script>
+<? }?>	
 </body>
 
 </html>

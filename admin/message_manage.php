@@ -150,7 +150,7 @@ $del=array(0=>'是',1=>'否')	;
         <div id="page-wrapper">
         <!-- /#page-wrapper -->
 			<h2 class=page-header-us>留言列表</h2>
-		<form  method="get" action="message_manage.php">			
+		<form  method="get" action="">			
 				<div class="panel panel-default">
 				  <!-- /.panel-heading -->
 					<div class="panel-heading">

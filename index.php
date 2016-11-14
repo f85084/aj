@@ -17,8 +17,8 @@ if(!empty($_POST['act']) && $_POST['act']=='add'){
 	$message=$_POST['message'];
 	$sedtime=$_POST['sedtime'];
 	if(empty($error)){ 
-    $sql="INSERT member (name,phone,address,people,baby,vegetarian,message,sedtime)
-        VALUES ('{$name}','{$phone}','{$address}','{$people}','{$baby}','{$vegetarian}','{$message}',sysdate())";
+    $sql="INSERT member (name,phone,address,people,baby,vegetarian,message,del,sedtime)
+        VALUES ('{$name}','{$phone}','{$address}','{$people}','{$baby}','{$vegetarian}','{$message}','1',sysdate())";
 		$result=mysql_query($sql);
 	$error='ok';	 
 	 	}	
@@ -39,6 +39,12 @@ echo "<script>window.location.href = '$url2'</script>";
 	
 $baby=array(0=>'是',1=>'否')	;
 $vegetarian=array(0=>'是',1=>'否')	;
+$people_total = "SELECT sum(people) FROM member";
+$people_total_query=mysql_query($people_total);
+$people_total_query_num =mysql_fetch_row($people_total_query);
+$pt= $people_total_query_num[0];
+
+
 
 $sql_photo = "SELECT * FROM  `photo` where del='0' ORDER BY  `id` DESC ";
 $result_photo=mysql_query($sql_photo);
@@ -62,12 +68,14 @@ $result_photo_co=mysql_query($sql_photo_co);
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel=icon href=img/index/aj_logo.ico>
     <meta name="description" content="">
     <meta name="author" content="">
 
     <title>Jack & Anna</title>
 
     <!-- Bootstrap Core CSS -->
+	    <link href="css/other_index.css" rel="stylesheet">
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
@@ -78,7 +86,7 @@ $result_photo_co=mysql_query($sql_photo_co);
 
     <!-- Theme CSS -->
     <link href="css/agency.min.css" rel="stylesheet">
-    <link href="css/other_index.css" rel="stylesheet">
+
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -132,7 +140,10 @@ $result_photo_co=mysql_query($sql_photo_co);
                         <a class="page-scroll" href="#contact">報名</a>
                     </li>					
                     <li>
-                        <a class="page-scroll" href="#portfolio">照片欣賞</a>
+                        <a class="page-scroll" href="#video">影片</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#portfolio">照片</a>
                     </li>
                 </ul>
             </div>
@@ -168,10 +179,8 @@ $result_photo_co=mysql_query($sql_photo_co);
                         <h4>劉政豪</h4>
                         <p class="text-muted">Jack</p>
                         <ul class="list-inline social-buttons">
-
                             <li><a href="#"><i class="fa fa-facebook"></i></a>
                             </li>
-
                         </ul>
                     </div>
                 </div>			
@@ -216,11 +225,11 @@ $result_photo_co=mysql_query($sql_photo_co);
                             </div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
-                                    <h4>2009-2011</h4>
-                                    <h4 class="subheading">Our Humble Beginnings</h4>
+                                    <h4>2008</h4>
+                                    <h4 class="subheading">我們故事的開始</h4>
                                 </div>
                                 <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
+                                    <p class="text-muted">這一年我們意外的成為好夥伴、好伴侶</p>
                                 </div>
                             </div>
                         </li>
@@ -230,11 +239,11 @@ $result_photo_co=mysql_query($sql_photo_co);
                             </div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
-                                    <h4>March 2011</h4>
-                                    <h4 class="subheading">An Agency is Born</h4>
+                                    <h4>2012</h4>
+                                    <h4 class="subheading">第一次成長階段</h4>
                                 </div>
                                 <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
+                                    <p class="text-muted">一起轉身畢業</p>
                                 </div>
                             </div>
                         </li>
@@ -244,11 +253,11 @@ $result_photo_co=mysql_query($sql_photo_co);
                             </div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
-                                    <h4>December 2012</h4>
-                                    <h4 class="subheading">Transition to Full Service</h4>
+                                    <h4>2012</h4>
+                                    <h4 class="subheading">到處開始遊玩</h4>
                                 </div>
                                 <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
+                                    <p class="text-muted">第一次一起出國遊玩</p>
                                 </div>
                             </div>
                         </li>
@@ -258,11 +267,11 @@ $result_photo_co=mysql_query($sql_photo_co);
                             </div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
-                                    <h4>July 2014</h4>
-                                    <h4 class="subheading">Phase Two Expansion</h4>
+                                    <h4>2016</h4>
+                                    <h4 class="subheading">第二次成長階段</h4>
                                 </div>
                                 <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
+                                    <p class="text-muted">現在就是永遠</p>
                                 </div>
                             </div>
                         </li>
@@ -296,7 +305,7 @@ $result_photo_co=mysql_query($sql_photo_co);
                     </span>
                     <h3 class="service-heading">資訊</h3>
                     <!-- <p class="text-muted">日期</p> -->
-					<h3 style="margin-top: 130px;    margin-bottom: 100px;">W&H飯店</br>2016年8月31日</h3>
+					<h3 style="margin-top: 130px;    margin-bottom: 100px;">儷宴</br>2017年04月02日</h3>
                 </div>
 				
                 <div class="col-md-4">
@@ -306,7 +315,7 @@ $result_photo_co=mysql_query($sql_photo_co);
                     </span>
                     <h3 class="service-heading">地址</h3>
                     <!-- <p class="text-muted">台灣</p> -->
-					<h3 style="margin-top: 130px;    margin-bottom: 100px;">新北市中和區中正路11巷11號1F11巷11號1F</h3>					
+					<h3 style="margin-top: 130px;    margin-bottom: 100px;">104台北市中山區林森北路413號</h3>					
                 </div>
 
                 <div class="col-md-4">
@@ -316,7 +325,7 @@ $result_photo_co=mysql_query($sql_photo_co);
                     </span>
                     <h3 class="service-heading">地圖</h3>
                     <!-- <p class="text-muted">google</p> -->
-<iframe src="http://www.dr2ooo.com/tools/maps/maps.php?zoom=13&width=300&height=300&ll=25.033442,481.499872&ctrl=true&cp=true&type=normal&" width="310" height="310" frameborder="0" style="border:0"></iframe>
+<iframe src="http://www.dr2ooo.com/tools/maps/maps.php?zoom=13&width=300&height=266&ll=25.059887,-238.47426&type=normal&cp=true&" width="310" height="310"frameborder="0" style="border:0"></iframe>
             </div>
         </div>
     </section>
@@ -325,11 +334,14 @@ $result_photo_co=mysql_query($sql_photo_co);
      <section id="contact">
         <div class="container">
             <div class="row">
+			
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">報名</h2>
                      <h3 class="section-subheading text-muted"><a href="#send" data-toggle="modal" >人員名單</a></h3>
                 </div>
             </div>
+	<? if('30'>=$pt ){?>	
+			<!--報名名單-->
             <div class="row">
                 <div class="col-lg-12">
                     <form name="form" id="contactForm" action="" enctype="multipart/form-data" method="post"  >
@@ -389,13 +401,21 @@ $result_photo_co=mysql_query($sql_photo_co);
                             <div class="clearfix"></div>
                             <div class="col-lg-12 text-center">
                                 <div id="success"></div>
-                                <button type="submit" class="btn btn-xl">送 出</button>
+                                <button type="submit" class="btn btn-xl" onclick="javascript:location.href='index.php#contact'">送 出</button>
 								<input type="hidden" name="act" value="add" />
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
+	<?}else{?>
+		            <div class="row">
+                <div class="col-lg-12 text-center" >
+				<h2 class="section-heading" style="color:red;">報名人數已滿</h2>
+				   </div>
+				</div>
+
+	<?}?>
         </div>
     </section>
 	
@@ -429,15 +449,36 @@ $result_photo_co=mysql_query($sql_photo_co);
  -->
      <!-- Portfolio Grid Section -->
 	 <!-- 照片 -->
-    <section id="portfolio" class="bg-light-gray">
+    <section id="video" class="bg-light-gray">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">照片特展</h2>
-                    <h3 class="section-subheading text-muted">一些相關照片</h3>
+                    <h2 class="section-heading">影片</h2>
+                    <h3 class="section-subheading text-muted">待拍完婚紗會 陸陸續續更新...</h3>
+					<h5 class="section-subheading text-muted">目前影片為 之前剪輯紀念影片...沒戴墨鏡勿點</h5>
                 </div>
             </div>
             <div class="row">
+				<div class="col-md-6 col-md-offset-3">
+					<div class="embed-responsive embed-responsive-16by9">
+					  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/jyUx__cY4cc"></iframe>
+					</div>
+				</div>
+            </div>
+        </div>
+		</section>
+		
+     <!-- Portfolio Grid Section -->
+	 <!-- 照片 -->
+    <section id="portfolio" >
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">照片</h2>
+                    <h3 class="section-subheading text-muted">待婚紗 拍攝完成.....</h3>
+                </div>
+            </div>
+   <!--         <div class="row">
 			<?while ($row_poto=mysql_fetch_array($result_photo)) {?>
                 <div class="col-md-4 col-sm-6 portfolio-item">
                     <a href="#portfolioModal<?=$row_poto['id']?>" class="portfolio-link" data-toggle="modal">
@@ -455,7 +496,7 @@ $result_photo_co=mysql_query($sql_photo_co);
                 </div>				
 				  <? }?>
             </div>
-        </div>
+        </div>-->
 		</section>
 
     <!-- Portfolio Modals -->
@@ -572,10 +613,10 @@ $result_photo_co=mysql_query($sql_photo_co);
 		</table>
 	</div>
 <br><br><br>
-
-
-       <button type="button" class="btn btn-primary margin_auto" data-dismiss="modal" ><i class="fa fa-times"></i> Close Project</button>
+	<div class='table-responsive send_table margin_auto'>
+       <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
 <br><br>
+    </div>
     </div>
   </div>
 </div>						 
@@ -588,9 +629,8 @@ $result_photo_co=mysql_query($sql_photo_co);
 				     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
-                    <span class="copyright">Copyright <a href="admin/message_manage.php">&copy;</a> A & J Website 2016</span>
+                    <span class="copyright">Copyright <a href="admin/login.php">&copy;</a> A & J Website 2016</span>
                 </div> 
-
 <!--                  <div class="col-md-4">
                     <ul class="list-inline social-buttons">
                         <li><a href="#"><i class="fa fa-facebook"></i></a>
@@ -612,7 +652,7 @@ $result_photo_co=mysql_query($sql_photo_co);
 <? if($error=='ok'){?>
 <script>
 alert('新增成功');
-header("location:index.php#contact");
+//header("location:index.php#contact");
 </script>
 <? }elseif(!empty($error)){?>
 <script>

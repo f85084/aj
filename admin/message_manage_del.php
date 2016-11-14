@@ -12,12 +12,6 @@ if(!empty($_POST['act']) && $_POST['act']=='add'){
 $baby=array(0=>'是',1=>'否')	;
 $vegetarian=array(0=>'是',1=>'否')	;
 
-$sql_photo = "SELECT * FROM  `photo` where del='0' ORDER BY  `id` DESC ";
-$result_photo=mysql_query($sql_photo);
-
-$sql_photo_co = "SELECT * FROM  `photo` where del='0' ORDER BY  `id` DESC";
-$result_photo_co=mysql_query($sql_photo_co);		
-
 $sql_member = "SELECT * FROM  member where id='$id'";
 // 回傳結果
 $result_member=mysql_query($sql_member);
@@ -126,46 +120,47 @@ $row_member=mysql_fetch_array($result_member);
         <!-- /#page-wrapper -->
         <div class="col-md-12 col-md-offset-0">
     <!-- Contact Section 問券 -->
-     <section id="contact">
-            <h3 style="margin-top: 10px;">刪除名單</h3>			
-                <form name="form" id="contactForm" action="" enctype="multipart/form-data" method="post"  >
-				<table class="menutable">	
+    <div class="col-md-12 col-md-offset-0">
+		<h3 class=page-header style="margin-top: 10px;">刪除名單</h3>			
+			<form name="form" id="contactForm" action="" enctype="multipart/form-data" method="post"  >
+		<div class="col-md-6 col-md-offset-3">
+			<table class="menutable">	
+				<tr>
+					<td>姓名</td>
+					<td><?=$row_member['name']?></td>
+				</tr>
+				<tr>
+					<td>電話</td>									
+					<td><?=$row_member['phone']?></td>
+				</tr>
+				<tr>		
+				<td>人數</td>																	
+				<td><?=$row_member['people']?></td>				
+				<tr>	
+					<td>是否有小孩</td>									
+					<td><?=$baby[$row_member['baby']]?></td>					
+				<tr>	
+					<td>是否有吃素</td>									
+					<td><?=$vegetarian[$row_member['vegetarian']]?></td>		
+				<tr>
+					<td>地址</td>									
+					<td><?=$row_member['address']?></td>
+				</div>
+				<tr>
+					<td>想說的話</td>									
+					<td><?=$row_member['message']?></td>
+				</tr>
 					<tr>
-						<td>姓名</td>
-						<td><?=$row_member['name']?></td>
+					<td colspan="10" align="center">
+					<button type="submit" class="btn btn-outline btn-primary">送 出</button>
+					<input type="hidden" name="act" value="add" />
+					</td>
 					</tr>
-					<tr>
-						<td>電話</td>									
-						<td><?=$row_member['phone']?></td>
-					</tr>
-					<tr>		
-					<td>人數</td>																	
-					<td><?=$row_member['people']?></td>				
-					<tr>	
-						<td>是否有小孩</td>									
-						<td><?=$baby[$row_member['baby']]?></td>					
-					<tr>	
-						<td>是否有吃素</td>									
-						<td><?=$vegetarian[$row_member['vegetarian']]?></td>		
-					<tr>
-						<td>地址</td>									
-						<td><?=$row_member['address']?></td>
-					</div>
-					<tr>
-						<td>想說的話</td>									
-						<td><?=$row_member['message']?></td>
-					</tr>
-						<tr>
-						<td colspan="10" align="center">
-						<button type="submit" class="btn btn-outline btn-primary">送 出</button>
-						<input type="hidden" name="act" value="add" />
-						</td>
-						</tr>
-					<br>
-					</table>
-				</form>
-        </div>
-    </section>
+				<br>
+				</table>
+			</form>
+    </div>
+    </div>
 </div>     
 </div>
 </div>

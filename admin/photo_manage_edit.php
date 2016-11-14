@@ -1,36 +1,26 @@
 <?
 //資料庫檔案
 include ('mydb.php');
-$id=$_GET['id'];
 
+
+
+$id=$_GET['id'];
 // 更新
 if(!empty($_POST['act']) && $_POST['act']=='add'){
-	$name=$_POST['name'];
-	$phone=$_POST['phone'];
-	$address=$_POST['address'];
-	$people=$_POST['people'];
-	$baby=$_POST['baby'];
-	$vegetarian=$_POST['vegetarian'];
-	$message=$_POST['message'];
-	$sedtime=$_POST['sedtime'];
-	
-	if(empty($error)){ 
-    $sql="UPDATE member set name='$name',phone='$phone',address='$address',people='$people',baby='$baby',vegetarian='$vegetarian',message='$message' where id='$id'";
-		$result=mysql_query($sql);
+$photo=$_FILES['photo']['name'];
+$title=$_POST['title'];		
+$content=$_POST['content'];		
+if(empty($error)){ 
+$sql="UPDATE photo set title='$title',content='$content' where id='$id'";
+$result=mysql_query($sql);
 	$error='ok';	 
 	 	}	
 		}
+		
+$sql_photo = "SELECT * FROM  `photo` where id='$id' ";
+$result_photo=mysql_query($sql_photo);	
+$row_photo=mysql_fetch_array($result_photo);
 
-$baby=array(0=>'是',1=>'否')	;
-$vegetarian=array(0=>'是',1=>'否')	;
-
-	
-$sql_member = "SELECT * FROM  member where id='$id'";
-// 回傳結果
-$result_member=mysql_query($sql_member);
-$row_member=mysql_fetch_array($result_member);
-	
-	
 	?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,13 +75,13 @@ $row_member=mysql_fetch_array($result_member);
                     <span class="icon-bar"></span>
                 </button>
                 <!--<a class="navbar-brand" href="../index.php">An</a>-->
-                <a class="navbar-branda page-scroll" href="../index.php">Jack & Anna</a>		
+                <a class="navbar-branda page-scroll" href="../index.php">Jack & Anna</a>	
             </div>
             <!-- /.navbar-header -->
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-					    <!-- /input-group -->
+					                            <!-- /input-group -->
                         <!--<li class="sidebar-search">
                             <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" placeholder="Search...">
@@ -102,6 +92,7 @@ $row_member=mysql_fetch_array($result_member);
                                 </span>
                             </div>
 							</li>-->
+
                         <li>
                             <a href="#"><i class="fa fa-files-o fa-user"></i> 留言管理<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -121,7 +112,6 @@ $row_member=mysql_fetch_array($result_member);
                                     <a href="photo_manage.php">照片列表</a>
                                 </li>
                             </ul>
-                    </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>
@@ -129,87 +119,38 @@ $row_member=mysql_fetch_array($result_member);
         </nav>
         <!--目錄-->
         <!--內容B-->
-        <div id="page-wrapper" style="padding-top: 10px;">
+        <div id="page-wrapper">
         <!-- /#page-wrapper -->
-        <div class="col-md-12 col-md-offset-0">
-    <!-- Contact Section 問券 -->
-        <div class="col-md-12 col-md-offset-0">
-        <h3 class=page-header style="margin-top: 10px;">修改資料</h3>			
-			<form name="form" id="contactForm" action="" enctype="multipart/form-data" method="post"  >
-				<div class="col-md-6 col-md-offset-3">
-					<div class="form-group">
-						<label>姓名</label>
-						<input type="text" class="form-control" value="<?=$row_member['name']?>" id="name"  name="name" required data-validation-required-message="請輸入姓名.">
-						<p class="help-block text-danger"></p>
-					</div>
-					<div class="form-group">
-						<label>電話</label>									
-						<input type="tel" class="form-control" value="<?=$row_member['phone']?>" id="phone"   name="phone" required data-validation-required-message="請輸入電話.">
-						<p class="help-block text-danger"></p>
-					</div>
-					<div class="form-group">		
-					<label>人數</label>																	
-					<select name="people" id="people" class="form-control">
-						<option ><?=$row_member['people']?></option>
-						<? for ($i=1; $i<=6; $i++) {?>
-						<option value="<?=$i?>"><?= $i; ?></option>
-						<? } ?>
-					</select>								
-					</div>									
-					<div class="form-group">	
-						<label>是否有小孩</label>									
-						<select name="baby" id="baby" class="form-control">
-						<option ><?=$baby[$row_member['baby']]?></option>
-						<?foreach($baby as $key => $value){?>
-						<option value="<?=$key?>"><?= $value; ?></option>					
-						<?}?>
-						</select>								
-					</div>									
-					<div class="form-group">	
-						<label>是否有吃素</label>									
-						<select name="vegetarian" id="vegetarian" class="form-control">
-						<option ><?=$vegetarian[$row_member['vegetarian']]?></option>
-						<?foreach($vegetarian as $key => $value){?>
-						<option value="<?=$key?>"><?= $value; ?></option>					
-						<?}?>
-						</select>								
-					</div>														
-					<div class="form-group">
-						<label>地址</label>									
-						<input type="text" class="form-control" value="<?=$row_member['address']?>" name="address" id="address" required data-validation-required-message="請輸入地址.">
-						<p class="help-block text-danger"></p>
-					</div>
-					<div class="form-group">
-						<label>想說的話</label>									
-						<textarea class="form-control"  id="message"  name="message"  required data-validation-required-message="請輸入訊息."><?=$row_member['message']?></textarea>
-						<p class="help-block text-danger"></p>
-					</div>		
-				</div>
-					<div class="clearfix"></div>
-					<div class="col-lg-12 text-center">
-						<div id="success"></div>
-						<button type="submit" class="btn btn-outline btn-primary">送 出</button>
-						<input type="hidden" name="act" value="add" />								
-					</div>
-				<br><br>
-			</form>
-        </div>
-    </div>
+                <div class="col-md-12 col-md-offset-0">
+                    <h1 class=page-header>編輯相片</h1>
+                    <form name="form" id="contactForm" action="" enctype="multipart/form-data" method="post"  >
+                            <div class="col-md-6 col-md-offset-3">
+							<div class="form-group">
+								<label>照片</label><br>
+								<img src=../photo/<?=$row_photo['photo']?> width=250 height=250><br><br>
+							<!--	<input type="file" name="photo" id="exampleInputFile"   placeholder="上傳照片"> -->
+							</div>
+                                <div class="form-group">
+									<label>標題</label>									
+                                    <input type="text" class="form-control"  id="title"  name="title"  value="<?=$row_photo['title']?>" required data-validation-required-message="請輸入訊息.">
+                                    <p class="help-block text-danger"></p>
+                                </div>   
+								<div class="form-group">
+									<label>內容</label>									
+                                    <textarea class="form-control" placeholder="內容" id="content"  name="content"  style="height:100px;" required data-validation-required-message="請輸入訊息."><?=$row_photo['content']?></textarea>
+                                    <p class="help-block text-danger"></p>
+                                </div>																									
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 text-center">
+                                <div id="success"></div>
+                                <button type="submit" class="btn btn-xl">送 出</button>
+								<input type="hidden" name="act" value="add" />								
+                            </div>
+                    </form>
+                </div>
 </div>     
 </div>
-</div>
-
-<? if($error=='ok'){?>
-<script>
-alert('新增成功');
-window.location.href = 'message_manage.php';
-</script>
-<? }elseif(!empty($error)){?>
-<script>
-alert('<?=$error?>');
-history.go(-1)
-</script>
-<? }?>	
             <!--內容S-->
     <!-- /#wrapper -->
         <!-- jQuery -->
@@ -228,7 +169,26 @@ history.go(-1)
         <!-- Custom Theme JavaScript -->
         <script src="/aj/js/sb-admin-2.js"></script>
 
+        <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').DataTable({
+                    responsive: true
+                });
 
+            });
+        </script>
+<? if($error=='ok'){?>
+<script>
+alert('更新成功');
+window.location.href ='photo_manage.php';
+</script>
+<? }elseif(!empty($error)){?>
+<script>
+alert('<?=$error?>');
+history.go(-1)
+</script>
+<? }?>	
 </body>
 
 </html>
